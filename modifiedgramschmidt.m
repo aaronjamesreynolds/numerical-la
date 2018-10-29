@@ -1,23 +1,21 @@
-close all; clear all;
-n = 10; a = rand(n,n); q = zeros(n,n); 
-r = zeros(n,n); v = zeros(n,n);
-
-for i = 1:n
-
-    v(:,i) = a(:, i);
+function[Q, R] = mgs(A)
     
-end
+    n = size(A,2);
 
-for i = 1:n
-   
-    r(i,i) = norm(v(:,i));
-    q(:,i) = v(:,i)/r(i,i);
-    
-    for j = i + 1:n
+    Q = zeros(size(A)); 
+    R = zeros(n); v = zeros(size(A));
         
-        r(i, j) = transpose(q(:,i)) * v(:, j);
-        v(:,j) = v(:,j) - r(i, j)*q(:,i);
-        
+    for i = 1:n
+        v(:,i) = A(:, i);
     end
- 
+
+    for i = 1:n
+        R(i,i) = norm(v(:,i));
+        Q(:,i) = v(:,i)/R(i,i);
+
+        for j = i + 1:n
+            R(i, j) = transpose(Q(:,i)) * v(:, j);
+            v(:,j) = v(:,j) - R(i, j)*Q(:,i);
+        end
+    end
 end
